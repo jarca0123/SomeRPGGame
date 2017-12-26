@@ -136,19 +136,18 @@ public class Game extends JFrame {
     }
 
     private void initializeSprites() throws IOException {
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/fight0.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/fight1.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/act0.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/act1.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/item0.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/item1.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/spare0.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/spare1.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/undertalebackground.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/alphys0.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/alphys1.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/alphys2.png"))));
-        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/heart.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite0.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite1.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite2.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite3.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite4.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite5.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite6.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite7.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite8.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite9.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite10.png"))));
+        sprites.add(Game.toBufferedImage(ImageIO.read(this.getClass().getResource("/sprite11.png"))));
     }
 
     private void initializeGUIs() {
