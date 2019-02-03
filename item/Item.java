@@ -7,7 +7,7 @@ public class Item {
     public int id;
     public String name;
     public String description = "This doesn't have a description...";
-    private boolean consumable = false;
+    public boolean consumable = false;
 
     public Item(int id, String name) {
         this.id = id;

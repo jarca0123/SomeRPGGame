@@ -2,22 +2,32 @@ package npc.player;
 
 import animation.Direction;
 import animation.NPCAnimationState;
+import battle.Battle;
+import file.FileSaver;
 import game.Game;
-import gui.GUIBattle;
-import gui.ImageComponent;
-import gui.window.GameInteraction;
+import graphics.JGraphics2D;
+import gui.*;
+import gui.window.*;
+import gui.window.Window;
+import item.AttackItem;
+import item.DefenseItem;
+import item.Inventory;
+import item.Item;
 import npc.NPC;
 import npc.bullet.PlayerBullet;
+import npc.player.PlayerStats;
 import tiles.Tile;
+import world.World;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.*;
 
 
 public class Player extends NPC implements KeyListener {
-    private int speed = 3;
+    public int speed = 3;
     private int holdingMoveKeys = 0;
     public GameInteraction interactionInstance;
     private GUIBattle guiBattle;
@@ -27,7 +37,7 @@ public class Player extends NPC implements KeyListener {
     public boolean menuKey;
     public boolean actionKey;
     public boolean backKey;
-    private ArrayList<Integer> movementKeys = new ArrayList<Integer>() {{
+    public ArrayList<Integer> movementKeys = new ArrayList<Integer>() {{
         add(KeyEvent.VK_UP);
         add(KeyEvent.VK_DOWN);
         add(KeyEvent.VK_LEFT);
@@ -51,7 +61,7 @@ public class Player extends NPC implements KeyListener {
     @Override
     public void battleLevelInit() {
         super.battleLevelInit();
-        bullet = new PlayerBullet(Game.world.battle.battleInteraction.width / 2, Game.world.battle.battleInteraction.height / 2, 20, 20);
+        bullet = new PlayerBullet(Game.world.battle.gui.battleInteraction.width / 2, Game.world.battle.gui.battleInteraction.height / 2, 20, 20);
         bullets.add(bullet);
     }
 
@@ -172,7 +182,7 @@ public class Player extends NPC implements KeyListener {
                         ((ImageComponent) Game.gui.getComponentById(-((GUIBattle) (Game.gui)).selectedBattleButton - 13370)).isSelected = true;
                     }
                 }
-                Game.gui.getComponentById(-13377).x = 30 + (163 * (((GUIBattle) (Game.gui)).selectedBattleButton - 1));
+                Game.world.battle.gui.enemyPic.x = 30 + (163 * (((GUIBattle) (Game.gui)).selectedBattleButton - 1));
             }
         }
     }
@@ -223,7 +233,8 @@ public class Player extends NPC implements KeyListener {
 
             for(int i : Game.gui.keyStrokes) {
                 if(movementKey != 0) break;
-                for(int movement : movementKeys){
+                Set<Integer> s = new LinkedHashSet<>(movementKeys);
+                for(int movement : s){
                     if(i == movement){
                         movementKey = movement;
                         break;
@@ -315,7 +326,7 @@ public class Player extends NPC implements KeyListener {
                     Game.gui.actionPerfomed(Game.gui.getComponentById(-((GUIBattle) (Game.gui)).selectedBattleButton - 13370));
                 } else {
                     if ((!((GUIBattle) (Game.gui)).hasSelectedCHARActer && Game.world.battle.selectedMenu != 2) || (!((GUIBattle) (Game.gui)).hasSelectedSubAction && Game.world.battle.selectedMenu == 2)) {
-                        Game.gui.getWindowById(-13370).getComponentById(-313379).visible = false;
+                        ((GUIBattle)Game.gui).battleInteraction.heartSelectImage.visible = false;
 
 
                         if (Game.world.battle.selectedMenu == 1) {
@@ -335,7 +346,7 @@ public class Player extends NPC implements KeyListener {
                             timeOfAttackPress = System.currentTimeMillis();
                         } else if (Game.world.battle.canSeeEnemyDialogue) {
                             Game.world.battle.canSeeEnemyDialogue = false;
-                            Game.gui.getComponentById(-696969).setVisible(false).setEnabled(false);
+                            ((GUIBattle)Game.gui).enemyBattleInteractionText.setVisible(false).setEnabled(false);
                         }
                     }
                 }

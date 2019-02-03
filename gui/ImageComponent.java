@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 
 public class ImageComponent extends GUIComponent {
     public BufferedImage image;
-    private BufferedImage image1;
+    public BufferedImage image1;
     public boolean isSelected;
-    private boolean selectable = false;
+    public boolean selectable = false;
 
     public ImageComponent(int id, int x, int y, int width, int height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown, int leftMargin, int rightMargin, int upMargin, int downMargin, BufferedImage image, BufferedImage image1) {
         super(id, x, y, width, height, alignLeft, alignRight, alignUp, alignDown, leftMargin, rightMargin, upMargin, downMargin);

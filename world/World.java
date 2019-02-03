@@ -5,6 +5,7 @@ import battle.Battle;
 import game.Game;
 import geometry.GameRect;
 import gui.window.GameInteraction;
+import gui.window.Window;
 import item.Inventory;
 import item.Item;
 import npc.NPC;
@@ -22,9 +23,9 @@ public class World {
     public int roomId;
     public boolean isEditing;
     public ArrayList<NPC> npcsInWorld = new ArrayList<>();
-    private ArrayList<NPC> npcList = new ArrayList<>();
+    public ArrayList<NPC> npcList = new ArrayList<>();
     public ArrayList<Tile> tileList = new ArrayList<>();
-    private ArrayList<Room> roomList = new ArrayList<>();
+    public ArrayList<Room> roomList = new ArrayList<>();
     public ArrayList<Item> itemList = new ArrayList<>();
     public int offsetX = 0;
     public int offsetY = 0;
@@ -133,13 +134,13 @@ public class World {
         }
     }
 
-    public boolean willCollide(Rectangle rekt, int dx, int dy){
+    public boolean willCollide(GameRect rekt, int dx, int dy){
         rekt.x += dx;
         rekt.y += dy;
         for(int roomX = 0; roomX < Game.world.room.roomTiles.length; roomX++) {
             for (int roomY = 0; roomY < Game.world.room.roomTiles[roomX].length; roomY++) {
                 if (Game.world.room.roomTiles[roomX][roomY] != null) {
-                    if (Game.world.room.roomTiles[roomX][roomY].bounds.intersects(rekt) && Game.world.room.roomTiles[roomX][roomY].solid) {
+                    if (Game.world.room.roomTiles[roomX][roomY].bounds.getOriginalRect().intersects(rekt) && Game.world.room.roomTiles[roomX][roomY].solid) {
                         rekt.x -= dx;
                         rekt.y -= dy;
                         return true;
@@ -390,7 +391,8 @@ public class World {
 
 
     public void startInteraction(GameInteraction interaction){
-
+        Window.addGUIWindow(interaction);
+        Game.world.isInteracting = true;
     }
 
 

@@ -22,15 +22,15 @@ public class Tile implements Cloneable, Serializable{
     public String pixelCode;
     public int x;
     public int y;
-    public Rectangle bounds;
+    public GameRect bounds;
     public Properties properties;
     public boolean solid;
-    private BufferedImage[][] subImages;
+    public BufferedImage[][] subImages;
     public int subImageX;
     public int subImageY;
-    private int subImageRows;
-    private int subImageCols;
-    private boolean useTileset;
+    public int subImageRows;
+    public int subImageCols;
+    public boolean useTileset;
     public int roomX;
     public int roomY;
     public Dialogue npcDialogue;
@@ -104,7 +104,7 @@ public class Tile implements Cloneable, Serializable{
         data = sw.toString().replace("#" + new Date().toString(), "").replaceFirst("#", "").replaceFirst("\r\n\r\n", "");
     }
 
-    private void splitTileset() {
+    public void splitTileset() {
 
 
         subImageRows = image.getWidth() / Game.tilesetSize;

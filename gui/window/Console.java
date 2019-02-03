@@ -11,8 +11,8 @@ import java.awt.event.KeyEvent;
 
 
 public class Console extends Window {
-    private int width = 100;
-    private int height = 100;
+    int width = 100;
+    int height = 100;
     int minimalHeight = 100;
     int minimalWidth = 100;
     public Console(int id) {

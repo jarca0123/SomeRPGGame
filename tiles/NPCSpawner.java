@@ -7,11 +7,11 @@ import java.util.ArrayList;
 
 
 public class NPCSpawner extends Tile {
-    private int npcToSpawn;
+    int npcToSpawn;
     private int npcY;
     private int npcX;
-    private int decision;
-    private boolean spawnAtTile = true;
+    public int decision;
+    public boolean spawnAtTile = true;
     public NPCSpawner(int id, String name, String imageSrc, String pixelCode, boolean solid, boolean useTileset) {
         super(id, name, imageSrc, pixelCode, solid, useTileset);
     }

@@ -4,8 +4,8 @@ import java.awt.*;
 
 
 public class PercentBar extends GUIComponent {
-    private Color backgroundColor;
-    private Color foregroundColor;
+    public Color backgroundColor;
+    public Color foregroundColor;
     public int percent = 100;
 
     public PercentBar(int id) {

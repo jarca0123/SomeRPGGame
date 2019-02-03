@@ -10,7 +10,7 @@ import java.util.Base64;
 public class Inventory {
     public ArrayList<Item> inventory = new ArrayList<>();
     public Inventory(){
-
+        inventory.add(Game.world.itemList.get(0));
     }
 
     public Item getItemFromInventory(int index){

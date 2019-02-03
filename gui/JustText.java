@@ -7,10 +7,10 @@ import java.awt.*;
 
 
 public class JustText extends GUIComponent{
-    private int fontSize;
+    public int fontSize;
     public String text;
-    private boolean center;
-    private Font font;
+    public boolean center;
+    public Font font;
     public JustText(int id, String text, boolean center, int fontSize) {
         super(id);
         this.text = text;
@@ -26,7 +26,7 @@ public class JustText extends GUIComponent{
 
         this.center = center;
         this.fontSize = fontSize;
-        this.font = new Font("Font Name", Font.BOLD, fontSize);
+        this.font = new Font("Determination Mono", Font.BOLD, fontSize);
 
     }
 
@@ -38,7 +38,7 @@ public class JustText extends GUIComponent{
 
 
 
-        g2d.setFont(new Font("Font Name", Font.BOLD, fontSize));
+        g2d.setFont(new Font("Determination Mono", Font.BOLD, fontSize));
         if(center) {
             drawCenteredString(g2d, text, bounds, g2d.getFont());
         } else {

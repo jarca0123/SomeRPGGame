@@ -2,7 +2,6 @@ package gui.window;
 
 import file.FileSaver;
 import game.Game;
-import gui.GUIBattle;
 import gui.ImageComponent;
 import gui.InteractionText;
 import gui.SelectionMenu;
@@ -13,11 +12,11 @@ import java.io.IOException;
 
 public class SaveDialog extends Window {
     public SelectionMenu selectionMenu;
-    private SaveTile tile;
+    public SaveTile tile;
     public SaveDialog(int id, boolean actionBarEnabled) {
         super(id, actionBarEnabled);
     }
-    private int selectedSelectionId = 1;
+    public int selectedSelectionId = 1;
 
     public SaveDialog(int id, int x, int y, int width, int height, boolean actionBarEnabled, SaveTile tile) {
         super(id, x, y, width, height, actionBarEnabled);
@@ -42,7 +41,7 @@ public class SaveDialog extends Window {
         if(selectionMenu.selectedId == 1){
 
             try {
-                FileSaver.saveFile("save.dat",tile);
+                FileSaver.saveFile("save.dat");
             } catch (IOException e) {
                 e.printStackTrace();
             }

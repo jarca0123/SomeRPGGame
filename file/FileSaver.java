@@ -1,9 +1,7 @@
 package file;
 
 import game.Game;
-import item.Inventory;
 import item.Item;
-import tiles.SaveTile;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -13,7 +11,7 @@ import java.util.Base64;
 
 public class FileSaver {
 
-    public static void saveFile(String fileName, SaveTile tile) throws IOException {
+    public static void saveFile(String fileName) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append(Game.world.roomId + ";");
 

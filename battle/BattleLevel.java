@@ -4,7 +4,7 @@ import game.Game;
 import npc.NPC;
 
 
-class BattleLevel {
+public class BattleLevel {
 
     public int width;
     public int height;

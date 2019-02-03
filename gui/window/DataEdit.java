@@ -14,7 +14,7 @@ import java.util.Properties;
 
 
 public class DataEdit extends Window {
-    private ArrayList<Tile> tiles;
+    public ArrayList<Tile> tiles;
     private int entries = 0;
     private SimpleButton addButton;
     private SimpleButton removeButton;

@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 
 public class Button extends GUIComponent{
-    private String text;
+    public String text;
     public Button(int id){
         super(id);
         this.text = "Button";
@@ -35,7 +35,7 @@ public class Button extends GUIComponent{
 
         g2d.setColor(Color.black);
         g2d.drawRect(x, y, width + (height), height);
-        drawCenteredString(g2d, text, new Rectangle(x, y, width + height, height), new Font("Font Name", Font.BOLD, 24));
+        drawCenteredString(g2d, text, new Rectangle(x, y, width + height, height), new Font("Determination Mono", Font.BOLD, 24));
 
     }
 }

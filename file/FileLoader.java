@@ -15,7 +15,7 @@ import java.util.Base64;
 public class FileLoader {
 
 
-    private static ArrayList<Decision> parseStringToDecisions(String s, int decisions){
+    public static ArrayList<Decision> parseStringToDecisions(String s, int decisions){
         ArrayList<Decision> tempDecisions = new ArrayList<>();
         Base64.Decoder decoder = Base64.getDecoder();
         String decodedString = new String(decoder.decode(s));

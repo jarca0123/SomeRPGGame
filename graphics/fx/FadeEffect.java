@@ -8,8 +8,9 @@ import java.awt.*;
 public class FadeEffect extends Effect {
 
     private final int fadeFrames;
-    private boolean fadeIn;
-    private int fadeFrame;
+    public boolean fadeIn;
+    public int fadeFrame;
+    private float fadeAmount = 0f;
 
     public FadeEffect(boolean fadeIn, int seconds){
         this.fadeIn = fadeIn;
@@ -19,7 +20,6 @@ public class FadeEffect extends Effect {
     @Override
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
-        float fadeAmount = 0f;
         if(fadeIn){
             fadeFrame++;
             fadeAmount = 1 - (float)fadeFrame / fadeFrames;

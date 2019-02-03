@@ -7,7 +7,7 @@ import java.awt.*;
 
 
 public class SomeBullet extends Bullet {
-    private Direction direction;
+    public Direction direction;
     public SomeBullet(int x, int y, int width, int height, Direction direction) {
         super(x, y, width, height);
         this.direction = direction;
@@ -44,6 +44,6 @@ public class SomeBullet extends Bullet {
     @Override
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
-        g2d.fillRect(Game.world.battle.battleInteraction.x + x, Game.world.battle.battleInteraction.y + y, width, height);
+        g2d.fillRect(Game.world.battle.gui.battleInteraction.x + x, Game.world.battle.gui.battleInteraction.y + y, width, height);
     }
 }

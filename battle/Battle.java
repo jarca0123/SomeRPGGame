@@ -16,16 +16,16 @@ import java.util.Arrays;
 public class Battle {
     public int selectedMenu =0;
     public int enemyHP;
-    private int playerHP;
+    public int playerHP;
     public ArrayList<NPC> enemies;
     public BattleDialogue battleDialogue;
-    public BattleInteraction battleInteraction;
 
+    public GUIBattle gui;
     public boolean fighting = false;
     public boolean enemyFighting = false;
     public boolean enemyPreFighting = false;
-    private int originalWidth;
-    private int originalHeight;
+    public int originalWidth;
+    public int originalHeight;
     public int battleWidth;
     public int battleHeight;
     public ArrayList<NPC> enemiesToRemove = new ArrayList<>();
@@ -40,7 +40,7 @@ public class Battle {
         this.enemies = enemy;
 
         this.playerHP = 100;
-        this.battleDialogue = new BattleDialogue("some text");
+        this.battleDialogue = new BattleDialogue("Well.");
 
     }
 
@@ -84,9 +84,10 @@ public class Battle {
 
     public void onBattleStart() {
         Game.game.setGUI(new GUIBattle());
-        originalWidth = Game.gui.getWindowById(-13370).width;
-        originalHeight = Game.gui.getWindowById(-13370).height;
-        hasBattleStarted = true;
+
+        originalWidth = gui.battleInteraction.width;
+        originalHeight = gui.battleInteraction.height;
+        Game.world.battle.hasBattleStarted = true;
 
     }
 
@@ -102,18 +103,18 @@ public class Battle {
     }
 
     public void onFightStart(){
-        ((DamageSlider)Game.gui.getWindowById(-13370).getComponentById(-6913370)).onFightStart();
+        gui.battleInteraction.damageSlider.onFightStart();
         fighting = true;
     }
 
     public void onFightPress() {
-        ((DamageSlider)Game.gui.getWindowById(-13370).getComponentById(-6913370)).onFightPress();
+        gui.battleInteraction.damageSlider.onFightPress();
         hasPressedFight = true;
     }
 
     public void onFightEnd(){
         hasPressedFight = false;
-        ((DamageSlider)Game.gui.getWindowById(-13370).getComponentById(-6913370)).onFightEnd();
+        gui.battleInteraction.damageSlider.onFightEnd();
         fighting = false;
         enemyPreFighting = true;
         for(NPC npc : enemies){
@@ -130,8 +131,8 @@ public class Battle {
         if(enemies.size() == 0){
 
 
-            Game.gui.getWindowById(-13370).resizeWindow(originalWidth, originalHeight, 2);
-            Game.gui.getWindowById(-13370).getComponentById(-313370).visible = true;
+            gui.battleInteraction.resizeWindow(originalWidth, originalHeight, 2);
+            gui.battleInteraction.battleInteractionText.visible = true;
             isBattleEnding = true;
             battleDialogue.enemyDialogueText = "YOU WIN!!!111";
         } else {
@@ -139,51 +140,51 @@ public class Battle {
         }
     }
 
-    private void onEnemyAttackStart(){
+    public void onEnemyAttackStart(){
 
         canSeeEnemyDialogue = true;
-        ((GUIBattle)Game.gui).getComponentById(-696969).visible = true;
-        ((EnemyBattleInteractionText)Game.gui.getComponentById(-696969)).nextDialogue("text");
-        ((EnemyBattleInteractionText)Game.gui.getComponentById(-696969)).setEnabled(true).setVisible(true);
-        Game.gui.getWindowById(-13370).resizeWindow(Math.abs(25 - (Game.GAME_HEIGHT - 75)) - 20, Math.abs(25 - (Game.GAME_HEIGHT - 75)) - 20, 20);
+        gui.enemyBattleInteractionText.setVisible(true);
+        gui.enemyBattleInteractionText.nextDialogue("My attack is lame.");
+        gui.enemyBattleInteractionText.setEnabled(true).setVisible(true);
+        gui.battleInteraction.resizeWindow(Math.abs(25 - (Game.GAME_HEIGHT - 75)) - 20, Math.abs(25 - (Game.GAME_HEIGHT - 75)) - 20, 20);
         for(NPC npc: enemies){
             npc.onEnemyAttackStart();
         }
     }
 
-    private void battleLevelEnd(){
+    public void battleLevelEnd(){
         Game.world.player.battleLevelEnd();
         for(NPC npc : enemies){
             npc.battleLevelEnd();
         }
 
         enemyFighting = false;
-        Game.gui.getWindowById(-13370).resizeWindow(originalWidth, originalHeight, 20);
-        battleDialogue.parseDialogue("There is not much to say...");
+        gui.battleInteraction.resizeWindow(originalWidth, originalHeight, 20);
+        battleDialogue.parseDialogue("Well again.");
         for(NPC npc : enemies){
             if(npc.canBeSpared){
                 battleDialogue.parseDialogue(npc.name + " is sparing you.");
             }
         }
-        ((JustText)battleInteraction.getComponentById(-313370)).visible = true;
-        Game.gui.getComponentById(-13377).visible = true;
+        gui.battleInteraction.battleInteractionText.visible = true;
+        gui.enemyPic.visible = true;
 
-        ((GUIBattle)Game.gui).hasSelectedAction = false;
-        ((GUIBattle)Game.gui).hasSelectedSubAction = false;
-        ((GUIBattle)Game.gui).hasSelectedCHARActer = false;
+        gui.hasSelectedAction = false;
+        gui.hasSelectedSubAction = false;
+        gui.hasSelectedCHARActer = false;
     }
 
-    private void battleLevelInit(){
+    public void battleLevelInit(){
         enemyFighting = true;
         enemyPreFighting = false;
         for(NPC npc : enemies){
             npc.isFighting = true;
         }
-        battleWidth = Game.gui.getWindowById(-13370).width;
-        battleHeight = Game.gui.getWindowById(-13370).height;
+        battleWidth = gui.battleInteraction.width;
+        battleHeight = gui.battleInteraction.height;
     }
 
-    private void battleLevelUpdate(){
+    public void battleLevelUpdate(){
 
         Game.world.player.bullet.update();
         for (NPC npc : enemies) {
@@ -193,7 +194,7 @@ public class Battle {
     }
 
     public void update(){
-        if(((!Game.gui.getWindowById(-13370).isResizing && !enemyFighting && ((GUIBattle)Game.gui).hasSelectedAction) || (!Game.gui.getWindowById(-13370).isResizing && !enemyFighting && ((GUIBattle)Game.gui).hasSelectedCHARActer)) && !canSeeEnemyDialogue) {
+        if(((!Game.gui.getWindowById(-13370).isResizing && !enemyFighting && gui.hasSelectedAction) || (!Game.gui.getWindowById(-13370).isResizing && !enemyFighting && gui.hasSelectedCHARActer)) && !canSeeEnemyDialogue) {
             Game.world.player.battleLevelInit();
             for(NPC npc: enemies){
                 npc.timeBattleLevel = System.currentTimeMillis();
@@ -208,7 +209,7 @@ public class Battle {
                 stillFighting = true;
             }
         }
-        if(!Game.gui.getWindowById(-13370).isResizing) {
+        if(!gui.battleInteraction.isResizing) {
             if(enemyFighting) {
                 if(!canSeeEnemyDialogue) {
                     if (!stillFighting) {

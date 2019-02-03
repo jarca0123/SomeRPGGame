@@ -4,11 +4,12 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class SelectionMenu extends GUIComponent {
+    public int numberOfSelections;
+    public int pages;
     public int selectedId = 1;
+    public int page = 1;
+
     public ArrayList<InteractionText> selections = new ArrayList<>();
-    private int numberOfSelections;
-    private int pages;
-    private int page = 1;
 
     public SelectionMenu(int id, int numberOfSelections, int pages) {
         super(id);
@@ -35,29 +36,34 @@ public class SelectionMenu extends GUIComponent {
     }
 
 
+
     @Override
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
-        if ((selectedId / (numberOfSelections / pages)) + 1 != page) {
+
+
+        if((selectedId / (numberOfSelections / pages)) + 1 != page){
             page = (selectedId / (numberOfSelections / pages)) + 1;
         }
-        for (InteractionText text : selections) {
-            if (selections.indexOf(text) / (numberOfSelections / pages) + 1 == page || pages == 1) {
-                if (text.text != "")
-                    text.draw(g2d);
+        for(InteractionText text : selections){
+            if(selections.indexOf(text) / (numberOfSelections / pages) + 1 == page || pages == 1) {
+                if(text.text !="")
+                text.draw(g2d);
+            } else {
+
             }
         }
     }
 
-    public void addSelection(InteractionText text) {
+    public void addSelection(InteractionText text){
         text.windowParent = windowParent;
         text.actualX += x;
         text.actualY += y;
         selections.add(text);
     }
 
-    public void setTextOfSelections(ArrayList<String> list) {
-        for (String s : list) {
+    public void setTextOfSelections(ArrayList<String> list){
+        for(String s : list){
             selections.get(list.indexOf(s)).text = s;
         }
     }

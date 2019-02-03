@@ -1,8 +1,5 @@
 package gui;
 
-import game.Game;
-import graphics.JGraphics2D;
-
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
@@ -50,7 +47,7 @@ public class TextBox extends GUIComponent{
             if (text.length() > 0)
                 text = text.substring(0, text.length() - 1);
         } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            onEnter(e);
+            onEnter();
         } else {
             text += e.getKeyChar();
         }

@@ -13,7 +13,7 @@ public class GUIMainMenu extends GUI {
 
     }
 
-    private float rotation = 0;
+    public float rotation = 0;
 
     @Override
     public void onStart() {
@@ -33,7 +33,7 @@ public class GUIMainMenu extends GUI {
         if(guiComponent.id == 2){
             addGUIWindow(new Dialog(0, Game.GAME_WIDTH / 2, Game.GAME_HEIGHT / 2, 200, 100, "Room name: ", true, new WindowCallback(){
                 @Override
-                public void onEvent(GUIComponent component, String... args) {
+                public void onEvent(String... args) {
                     Game.game.start(true, args[0]);
                     Game.game.setGUI(new GUILevelEditor());
                     visible = false;

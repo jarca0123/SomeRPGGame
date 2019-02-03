@@ -8,8 +8,8 @@ import java.awt.geom.AffineTransform;
 
 
 public class AimingToPlayerBullet extends Bullet {
-    private Direction direction;
-    private double moveHeartangle = 0d;
+    public Direction direction;
+    double moveHeartangle = 0d;
     public AimingToPlayerBullet(int x, int y, int width, int height, Direction direction) {
         super(x, y, width, height);
         this.direction = direction;
@@ -47,13 +47,13 @@ public class AimingToPlayerBullet extends Bullet {
 
 
         AffineTransform old = g2d.getTransform();
-        g2d.translate(Game.world.battle.battleInteraction.x + x + (width / 2), Game.world.battle.battleInteraction.y + y + (height / 2));
+        g2d.translate(Game.world.battle.gui.battleInteraction.x + x + (width / 2), Game.world.battle.gui.battleInteraction.y + y + (height / 2));
         g2d.rotate(moveHeartangle);
         System.out.println(Math.toDegrees(moveHeartangle));
 
 
-        g2d.translate(-(Game.world.battle.battleInteraction.x + x + (width / 2)), -(Game.world.battle.battleInteraction.y + y + (height / 2)));
-        g2d.fillRect(Game.world.battle.battleInteraction.x + x, Game.world.battle.battleInteraction.y + y, width, height);
+        g2d.translate(-(Game.world.battle.gui.battleInteraction.x + x + (width / 2)), -(Game.world.battle.gui.battleInteraction.y + y + (height / 2)));
+        g2d.fillRect(Game.world.battle.gui.battleInteraction.x + x, Game.world.battle.gui.battleInteraction.y + y, width, height);
 
 
         g2d.rotate(-moveHeartangle);

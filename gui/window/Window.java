@@ -21,28 +21,27 @@ public class Window  {
     public int y = 100;
     public int width = 128;
     public int height = 128;
-    private int newWidth = -1;
-    private int newHeight = -1;
+    public int newWidth = -1;
+    public int newHeight = -1;
     public Rectangle entireWindowBounds;
     public Rectangle frameBounds;
     public Rectangle windowBounds;
-    public String justBecauseIWroteLeftBeforeRightDoesntMeanThatItsMyPolitcalView;
     public Rectangle leftFrameBounds;
     public Rectangle rightFrameBounds;
     public Rectangle downFrameBounds;
     private Path2D.Double titleBarPath = new Path2D.Double();
     public ArrayList<GUIComponent> guiComponents = new ArrayList<>();
-    private boolean enabled;
-    boolean visible;
+    public boolean enabled;
+    public boolean visible;
     public GUIComponent selectedComponent;
     public int minimalWidth = 30;
     public int minimalHeight = 30;
     public boolean deletThis = false;
     private int animationSpeed;
     public boolean isResizing = false;
-    private boolean actionBarEnabled;
+    public boolean actionBarEnabled;
 
-    Window(int id, boolean actionBarEnabled){
+    public Window(int id, boolean actionBarEnabled){
         this.id = id;
         this.actionBarEnabled = actionBarEnabled;
         this.entireWindowBounds = new Rectangle(x, y, width, height);
@@ -56,7 +55,7 @@ public class Window  {
         if(actionBarEnabled) addComponent(new CloseButton(-1, 0, 0, 20, 20, null, this, this, null, 0, 0, 0, 0));
     }
 
-    Window(int id, int x, int y, int width, int height, boolean actionBarEnabled){
+    public Window(int id, int x, int y, int width, int height, boolean actionBarEnabled){
         this.id = id;
         this.x = x;
         this.y = y;
@@ -75,7 +74,7 @@ public class Window  {
         visible = true;
         if(actionBarEnabled) addComponentRelativeToWindow(new CloseButton(-1, 0, 0, 20, 20, null, this, this, null, 0, -20, 0, 0));
     }
-    GUIComponent addComponent(GUIComponent guiComponent){
+    public GUIComponent addComponent(GUIComponent guiComponent){
         guiComponent.windowParent = this;
         guiComponent.initForWindow();
         guiComponents.add(guiComponent);
@@ -87,12 +86,12 @@ public class Window  {
         guiComponents.remove(guiComponent);
     }
 
-    void removeComponent(int id){
+    public void removeComponent(int id){
 
         guiComponents.remove(getComponentById(id));
     }
 
-    private void addComponentRelativeToWindow(GUIComponent guiComponent){
+    public void addComponentRelativeToWindow(GUIComponent guiComponent){
         guiComponent.windowParent = this;
         guiComponents.add(guiComponent);
         guiComponent.scrollBarY = (int) frameBounds.getY() + 10;
@@ -107,14 +106,11 @@ public class Window  {
         guiComponents.add(guiComponent);
         guiComponent.scrollBarY = (int) frameBounds.getY() + 10;
     }
-    @Deprecated
-    public static void addGameWindow(Window window){
-        Game.windows.add(0, window);
-    }
+
 
     public static void addGUIWindow(Window window){
 
-        Game.gui.windows.add(window);
+        Game.gui.windowsToAdded.add(window);
     }
 
     public void draw(Graphics2D g2d) {
@@ -231,16 +227,17 @@ public class Window  {
     public void actionPerformed(GUIComponent guiComponent) {
         if(enabled) {
             if (guiComponent.id == -1) {
-                onWindowClose();
+                Game.game.gui.removeGUIWindow(this);
             }
         }
     }
 
     public void onWindowClose() {
 
-        enabled = false;
-        visible = false;
-        deletThis = true;
+
+
+
+
     }
 
     public void enterPerformed(GUIComponent guiComponent) {
