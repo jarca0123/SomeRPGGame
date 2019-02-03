@@ -11,7 +11,7 @@ public class Effect {
 
     }
 
-    void stopEffect(){
+    public void stopEffect(){
         isStopping = true;
     }
 }

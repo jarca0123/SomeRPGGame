@@ -9,9 +9,9 @@ import java.awt.event.KeyEvent;
 
 
 public class TextArea extends GUIComponent {
-    private String placeholder = "";
+    public String placeholder = "";
     public String text = "";
-    private Font font;
+    public Font font;
 
     public TextArea(int id, String placeholder) {
         super(id);
@@ -41,7 +41,7 @@ public class TextArea extends GUIComponent {
         super(id, x, y, width, height, alignLeft, alignRight, alignUp, alignDown);
     }
 
-    private void drawString(Graphics g, String text, int x, int y) {
+    void drawString(Graphics g, String text, int x, int y) {
         for (String line : text.split("\n"))
             g.drawString(line, x, contentOffsetY + (y += g.getFontMetrics().getHeight()));
     }

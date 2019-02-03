@@ -7,7 +7,6 @@ import geometry.GameRect;
 import graphics.JGraphics2D;
 import graphics.fx.Effect;
 import graphics.fx.FadeEffect;
-import item.Item;
 import npc.NPC;
 import tiles.Tile;
 
@@ -26,31 +25,33 @@ public class GamePanel extends JPanel {
     public boolean fadeOut = false;
     public int speed = 10;
     public static String consoleLog = "";
-    private boolean nextFrame = true;
+    public boolean nextFrame = true;
+    private boolean drawn = false;
     private int fadeFrame = 0;
     private int fadeFrames = 0;
     private float fadeAmount = 0f;
     private int flashHeartTimes;
     private long flashHeartTime;
-    private boolean flashing = false;
+    public boolean flashing = false;
     private boolean actuallyFlashing = false;
-    private boolean movingHeart = false;
-    private double moveHeartX = 0;
-    private double moveHeartY = 0;
-    private double movingHeartX = 0;
-    private double movingHeartY = 0;
+    public boolean movingHeart = false;
+    public double moveHeartX = 0;
+    public double moveHeartY = 0;
+    public double movingHeartX = 0;
+    public double movingHeartY = 0;
+    private double moveHeartangle = 0d;
     private double moveHeartdeltaX = 0d;
     private double moveHeartdeltaY = 0d;
     private int moveHeartSpeed = 0;
-    private ArrayList<Effect> effects = new ArrayList<>();
-    private ArrayList<Effect> effectsToRemove = new ArrayList<>();
+    public ArrayList<Effect> effects = new ArrayList<>();
+    public ArrayList<Effect> effectsToRemove = new ArrayList<>();
 
     public GamePanel(){
         this.setSize(640, 480);
 
     }
 
-    private void addEffect(Effect e){
+    public void addEffect(Effect e){
         effects.add(e);
     }
     public void removeEffect(Effect e){
@@ -64,7 +65,7 @@ public class GamePanel extends JPanel {
                 RenderingHints.VALUE_ANTIALIAS_ON);
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
                 RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-        g2d.setFont(new Font("Font Name", Font.BOLD, 10));
+        g2d.setFont(new Font("Determination Mono", Font.BOLD, 10));
 
         if(Game.world != null) {
             if(Game.world.room != null) {
@@ -76,7 +77,7 @@ public class GamePanel extends JPanel {
                     drawLand(g2d);
                     drawNPCs(g2d);
                     if (Game.world.isEditing) {
-                        drawLevelEditorGui(g2d);
+                        drawLevelEditorGui();
                     }
                 }
             }
@@ -132,7 +133,7 @@ public class GamePanel extends JPanel {
 
             g2d.setColor(Color.black);
             g2d.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
-            g2d.drawImage(Game.sprites.get(12), (int)movingHeartX, (int)movingHeartY, null);
+            g2d.drawImage(Game.game.sprites.get(12), (int)movingHeartX, (int)movingHeartY, null);
         }
         if(flashing){
             if(flashHeartTimes < 0){
@@ -145,7 +146,7 @@ public class GamePanel extends JPanel {
                     }
                     g2d.setColor(Color.black);
                     g2d.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
-                    JGraphics2D.drawGameImage(g2d, Game.sprites.get(12), Game.world.player.x, Game.world.player.y);
+                    JGraphics2D.drawGameImage(g2d, Game.game.sprites.get(12), Game.world.player.x, Game.world.player.y);
                 } else {
                     if (flashHeartTime + 100 < System.currentTimeMillis()) {
                         actuallyFlashing = true;
@@ -160,7 +161,7 @@ public class GamePanel extends JPanel {
 
         g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
         g2d.drawString(Integer.toString(realTimeFPS), 20, 20);
-        boolean drawn = true;
+        drawn = true;
     }
 
     private void drawWindows(Graphics2D g2d) {
@@ -169,7 +170,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void drawLevelEditorGui(Graphics2D g2d) {
+    private void drawLevelEditorGui() {
 
     }
 
@@ -183,11 +184,11 @@ public class GamePanel extends JPanel {
 
 
     long lastLoopTime = System.nanoTime();
-    private final int TARGET_FPS = 60;
+    final int TARGET_FPS = 60;
     final long OPTIMAL_TIME = 1000000000 / TARGET_FPS;
-    private int lastFpsTime;
-    private int fps;
-    private int realTimeFPS;
+    int lastFpsTime;
+    int fps;
+    int realTimeFPS;
     public void gameLoop()
     {
         long lastLoopTime = System.nanoTime();
@@ -274,7 +275,7 @@ public class GamePanel extends JPanel {
                 Game.world.room.highlightedTileY = Integer.parseInt(args.get(1));
             } else {
                 Game.world.room.highlightedTile = new Tile(0, "Debug", "", "", false, false, Integer.parseInt(args.get(0)) * Game.tilesetSize, Integer.parseInt(args.get(1)) * Game.tilesetSize);
-                Game.world.room.highlightedTile.bounds = new Rectangle((Integer.parseInt(args.get(0)) * Game.tilesetSize) + Game.world.offsetX, (Integer.parseInt(args.get(1)) * Game.tilesetSize) + Game.world.offsetX, Game.tilesetSize, Game.tilesetSize);
+                Game.world.room.highlightedTile.bounds = new GameRect((Integer.parseInt(args.get(0)) * Game.tilesetSize) + Game.world.offsetX, (Integer.parseInt(args.get(1)) * Game.tilesetSize) + Game.world.offsetX, Game.tilesetSize, Game.tilesetSize);
                 Game.world.room.roomTiles[Integer.parseInt(args.get(0))][Integer.parseInt(args.get(1))] = Game.world.room.highlightedTile;
                 Game.world.room.highlightedTileX = Integer.parseInt(args.get(0));
                 Game.world.room.highlightedTileY = Integer.parseInt(args.get(1));
@@ -373,7 +374,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void gameUpdate(double delta){
+    public void gameUpdate(double delta){
         if(Game.world.battle == null) {
             if(Game.world.isStartingBattle){
                 Thread battleStartThread = new Thread(new Runnable() {
@@ -426,7 +427,7 @@ public class GamePanel extends JPanel {
         nextFrame = true;
     }
 
-    private void draw(){
+    public void draw(){
 
         repaint();
     }
@@ -436,12 +437,16 @@ public class GamePanel extends JPanel {
             for (int roomY = 0; roomY < Game.world.room.roomTiles[roomX].length; roomY++) {
 
                 JGraphics2D.drawGameImage(g2d, Game.world.tileList.get(0).image, roomX * Game.tilesetSize, roomY * Game.tilesetSize, Game.tilesetSize, Game.tilesetSize);
-                if(Game.world.room.roomTiles[roomX][roomY] != null) JGraphics2D.drawGameImage(g2d, Game.world.room.roomTiles[roomX][roomY].image, roomX * Game.tilesetSize, roomY * Game.tilesetSize, Game.tilesetSize, Game.tilesetSize);
+
+                if(Game.world.room.roomTiles[roomX][roomY] != null) {
+                    JGraphics2D.drawGameImage(g2d, Game.world.room.roomTiles[roomX][roomY].image, roomX * Game.tilesetSize, roomY * Game.tilesetSize, Game.tilesetSize, Game.tilesetSize);
+
+                }
             }
         }
     }
 
-    private void drawNPCs(Graphics2D g2d){
+    protected void drawNPCs(Graphics2D g2d){
         for(NPC npc : Game.world.npcsInWorld){
 
             npc.draw(g2d);
@@ -450,7 +455,7 @@ public class GamePanel extends JPanel {
         }
     }
 
-    private void startBattleThread(Battle battle){
+    public void startBattleThread(Battle battle){
         Game.world.isStartingBattle = false;
         Game.gamePanel.flashHeart(3);
 
@@ -484,13 +489,13 @@ public class GamePanel extends JPanel {
 
     }
 
-    private void flashHeart(int times) {
+    public void flashHeart(int times) {
         flashHeartTimes = times;
         flashHeartTime = System.currentTimeMillis();
         flashing = true;
     }
 
-    private void moveHeart(int x, int y, int speed) {
+    public void moveHeart(int x, int y, int speed) {
         moveHeartX = x;
         moveHeartY = y;
         movingHeartX = Game.world.player.x;
@@ -508,7 +513,7 @@ public class GamePanel extends JPanel {
         } else {
             moveAngleY = movingHeartY - moveHeartY;
         }
-        double moveHeartangle = Math.atan2(-moveAngleY, moveAngleX);
+        moveHeartangle = Math.atan2(-moveAngleY, moveAngleX);
         moveHeartdeltaX = Math.cos(moveHeartangle);
         moveHeartdeltaY = Math.sin(moveHeartangle);
 

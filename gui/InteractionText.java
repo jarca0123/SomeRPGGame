@@ -9,7 +9,7 @@ public class InteractionText extends GUIComponent{
     public String text;
     private String renderedText;
 
-    private int fontSize = 28;
+    public int fontSize = 28;
     private boolean fightSelecting;
 
     public InteractionText(int id, String text) {

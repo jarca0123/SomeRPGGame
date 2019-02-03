@@ -4,7 +4,7 @@ import java.awt.*;
 
 
 public class CloseButton extends GUIComponent {
-    private String text;
+    public String text;
     public boolean isSelected = false;
     public CloseButton(int id) {
         super(id);

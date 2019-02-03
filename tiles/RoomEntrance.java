@@ -6,7 +6,7 @@ import npc.player.Player;
 
 
 public class RoomEntrance extends Tile{
-    private int idOfRoom;
+    public int idOfRoom;
     public RoomEntrance(int id, String name, String imageSrc, String pixelCode, boolean solid, boolean useTileset) {
         super(id, name, imageSrc, pixelCode, solid, useTileset);
     }

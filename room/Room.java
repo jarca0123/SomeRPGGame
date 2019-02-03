@@ -18,7 +18,7 @@ import java.util.Properties;
 
 public class Room {
     public Tile[][] roomTiles;
-    private ArrayList<ArrayList<Tile>> listRoomTiles = new ArrayList<>();
+    public ArrayList<ArrayList<Tile>> listRoomTiles = new ArrayList<>();
     public int id;
     public String name;
     public int width;
@@ -68,7 +68,7 @@ public class Room {
         }
     }
 
-    private void scanRoomImage(String name){
+    public void scanRoomImage(String name){
         BufferedImage roomImage = null;
         try {
             roomImage = ImageIO.read(new File(name));

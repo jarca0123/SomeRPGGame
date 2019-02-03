@@ -1,39 +1,65 @@
 package gui;
 
 import game.Game;
+import graphics.JGraphics2D;
 
 import java.awt.*;
-import java.awt.geom.Path2D;
 import java.util.ArrayList;
 
-public class EnemyBattleInteractionText extends GUIComponent {
+
+public class BattleInteractionText extends GUIComponent{
+    public int fontSize;
+    public String text;
+    public boolean center;
+    public Font font;
 
     public long timeSinceLastCharacter;
     public ArrayList<String> textLines = new ArrayList<String>();
     public ArrayList<String>  renderedTextLines = new ArrayList<String>();
     public int alreadyRendered = 0;
 
-    public EnemyBattleInteractionText(int id, double x, double y, double width, double height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown, int leftMargin, int rightMargin, int upMargin, int downMargin) {
-        super(id, x, y, width, height, alignLeft, alignRight, alignUp, alignDown, leftMargin, rightMargin, upMargin, downMargin);
+    public BattleInteractionText(int id, String text, boolean center, int fontSize) {
+        super(id);
+        this.text = text;
+        this.center = center;
+        this.fontSize = fontSize;
     }
 
-    public void nextDialogue(String text){
+
+
+
+
+    public BattleInteractionText(int id, double x, double y, double width, double height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown, int leftMargin, int rightMargin, int upMargin, int downMargin, String text, boolean center, int fontSize) {
+        super(id, x, y, width, height, alignLeft, alignRight, alignUp, alignDown, leftMargin, rightMargin, upMargin, downMargin);
+        this.text = text;
+
+
+        this.center = center;
+        this.fontSize = fontSize;
+        this.font = new Font("Determination Mono", Font.BOLD, fontSize);
+
+    }
+
+
+    @Override
+    public void initForWindow() {
         int stringwidth = 0;
         int textline = 0;
+        super.initForWindow();
         renderedTextLines = new ArrayList<>();
         textLines.add("");
         for(String s : text.split(" ")){
 
-            stringwidth += Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 12)).stringWidth(s);
-            if (stringwidth > 100) {
-                stringwidth = Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 12)).stringWidth(s);
+            stringwidth += Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, fontSize)).stringWidth(s);
+            if (stringwidth > 450) {
+                stringwidth = Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, fontSize)).stringWidth(s);
                 textLines.set(textline, textLines.get(textline).substring(0, textLines.get(textline).length() - 1));
                 textline++;
                 textLines.add("");
-                textLines.set(textline, s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
+                textLines.set(textline, textLines.get(textline) + s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
 
             } else {
-                textLines.set(textline, s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
+                textLines.set(textline, textLines.get(textline) + s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
             }
 
         }
@@ -49,15 +75,11 @@ public class EnemyBattleInteractionText extends GUIComponent {
     public void draw(Graphics2D g2d) {
         super.draw(g2d);
 
-        g2d.setColor(Color.WHITE);
-        Path2D.Double triangle = new Path2D.Double();
-        triangle.moveTo(actualX + 0, actualY + 30);
-        triangle.lineTo(actualX + 30, actualY + 15);
-        triangle.lineTo(actualX + 30, actualY + 45);
-        triangle.closePath();
-        g2d.fill(triangle);
-        g2d.fillRect(actualX + 30, actualY, width, height);
-        g2d.setFont(new Font("Determination Mono", Font.BOLD, 12));
+        g2d.setColor(Color.white);
+
+
+
+        g2d.setFont(new Font("Determination Mono", Font.BOLD, fontSize));
         g2d.setColor(Color.BLACK);
         if(!renderedTextLines.get(alreadyRendered).equals(textLines.get(alreadyRendered))) {
             if (timeSinceLastCharacter + 25 < System.currentTimeMillis()) {
@@ -67,11 +89,12 @@ public class EnemyBattleInteractionText extends GUIComponent {
         } else if (renderedTextLines.get(alreadyRendered).equals(textLines.get(alreadyRendered)) && renderedTextLines.size() - 1 > alreadyRendered){
             alreadyRendered++;
         }
-        g2d.setColor(Color.BLACK);
+        g2d.setColor(Color.WHITE);
         for(int i = 0; i < renderedTextLines.size(); i++) {
+            g2d.drawString(renderedTextLines.get(i), x +10, y + 30 + (i * 50));
 
-            g2d.drawString(renderedTextLines.get(i), x + 40, y + 10 + (i * 20));
+
+
         }
-
     }
 }

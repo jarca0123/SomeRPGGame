@@ -67,11 +67,11 @@ public class InventoryWindow extends Window{
                     itemToBeEquiped.onConsume();
                     usedItem = true;
                 }
-                onWindowClose();
+                Game.gui.removeGUIWindow(this);
                 Game.world.player.interactionInstance = new GameInteraction(-20000 - id, 0, Game.GAME_HEIGHT - 120, Game.GAME_WIDTH, 120, false, usedItem ? "Consumed " + itemToBeEquiped.name + "." : "Equiped " + itemToBeEquiped.name + ".");
                 Game.world.startInteraction(Game.world.player.interactionInstance);
             } else if(selectMenu.selectedId == 2){
-                onWindowClose();
+                Game.gui.removeGUIWindow(this);
                 Game.world.player.interactionInstance = new GameInteraction(-20000 - id, 0, Game.GAME_HEIGHT - 120, Game.GAME_WIDTH, 120, false, Game.world.inventory.getItemFromInventory(selectionMenu.selectedId - 1));
                 Game.world.startInteraction(Game.world.player.interactionInstance);
             }

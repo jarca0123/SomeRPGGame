@@ -9,7 +9,7 @@ import npc.bullet.SomeBullet;
 
 public class SomeBoss extends Boss {
     private long lastSpawn = 0l;
-    private boolean horizontal = true;
+    public boolean horizontal = true;
 
 
     public SomeBoss(int id, String name, String imageSrc, int x, int y, int tileSetWidth, int tileSetHeight, int width, int height, boolean useTileset) {

@@ -14,15 +14,20 @@ import java.util.ArrayList;
 
 
 public class GUIBattle extends GUI {
-    private ArrayList<NPC> enemies;
+    public ArrayList<NPC> enemies;
     public BattleInteraction battleInteraction;
+    public EnemyBattleInteractionText enemyBattleInteractionText;
+    public ImageComponent enemyPic;
     public int selectedSelectionId = 1;
     public int selectedSubSelectionId = 1;
     public int selectedBattleButton = 1;
     public boolean hasSelectedAction = false;
     public boolean hasSelectedCHARActer = false;
     public boolean hasSelectedSubAction = false;
-    private Color tempColor;
+    public Color tempColor;
+    public PercentBar enemyHealthBar;
+    public PercentBar healthBar;
+
     public GUIBattle(){
 
     }
@@ -32,13 +37,14 @@ public class GUIBattle extends GUI {
         super.onStart();
         tempColor = Game.game.getGraphics().getColor();
         enemies = Game.world.battle.enemies;
+        Game.world.battle.gui = this;
         for(NPC npc: enemies){
             npc.bullets = new ArrayList<>();
         }
         battleInteraction = new BattleInteraction(-13370, 20, 250, 600, Math.abs(250 - (Game.GAME_HEIGHT - 50)) - 50, false, enemies.get(0));
         System.out.println(battleInteraction.height);
         addGUIWindow(battleInteraction);
-        Game.world.battle.battleInteraction = battleInteraction;
+
         addComponent(new JustText(-3133711, 20, 380, 40, 50, null, null, null, null, 0, 0, 5, 0, "You", true, 30));
         addComponent(new JustText(-3133712, 135, 380, 40, 50, null, null, null, null, 0, 0, 5, 0, "NO LVL", true, 30));
         addComponent(new JustText(-3133713, (Game.GAME_WIDTH / 2) - 90, 380, 40, 50, null, null, null, null, 0, 0, 5, 0, "HP", true, 20));
@@ -49,10 +55,11 @@ public class GUIBattle extends GUI {
         addComponent(new ImageComponent(-13374, 509, Game.GAME_HEIGHT - 50, Game.sprites.get(0).getWidth(), Game.sprites.get(0).getHeight(), Game.sprites.get(6), Game.sprites.get(7), true));
         addComponent(new ImageComponent(-13375, 20, 0, Game.sprites.get(8).getWidth(), Game.sprites.get(8).getHeight(), Game.sprites.get(8), null, false));
         ((ImageComponent) getComponentById(-13370 - selectedBattleButton)).isSelected = true;
-        addComponent(new PercentBar(-13376, (Game.GAME_WIDTH / 2) - 100, 150, 200, 30, null, null, null, null, 0, 0, 0, 0, Color.black, Color.green));
-        addComponent(new PercentBar(-23371, (Game.GAME_WIDTH / 2) - 50, 390, Game.world.player.constantHP, 30, null, null, null, null, 0, 0, 0, 0, Color.red, Color.YELLOW));
-        addComponent(new ImageComponent(-13377, 30, Game.GAME_HEIGHT - 40, Game.sprites.get(12).getWidth(), Game.sprites.get(12).getHeight(), Game.sprites.get(12), null, false));
-        addComponent(new EnemyBattleInteractionText(-696969, 320 + 50, 50, 100, 100, null, null, null, null, 0, 0, 0, 0).setEnabled(false).setVisible(false));
+        enemyHealthBar = (PercentBar)addComponent(new PercentBar(-13376, (Game.GAME_WIDTH / 2) - 100, 150, 200, 30, null, null, null, null, 0, 0, 0, 0, Color.black, Color.green));
+        healthBar = (PercentBar) addComponent(new PercentBar(-23371, (Game.GAME_WIDTH / 2) - 50, 390, Game.world.player.constantHP, 30, null, null, null, null, 0, 0, 0, 0, Color.red, Color.YELLOW));
+        enemyPic = (ImageComponent)addComponent(new ImageComponent(-13377, 30, Game.GAME_HEIGHT - 40, Game.sprites.get(12).getWidth(), Game.sprites.get(12).getHeight(), Game.sprites.get(12), null, false));
+        enemyBattleInteractionText = (EnemyBattleInteractionText) addComponent(new EnemyBattleInteractionText(-696969, 320 + 50, 50, 100, 100, null, null, null, null, 0, 0, 0, 0).setEnabled(false).setVisible(false));
+
     }
 
     @Override
@@ -79,7 +86,7 @@ public class GUIBattle extends GUI {
         super.actionPerfomed(guiComponent);
 
 
-        getComponentById(-13377).visible = false;
+        enemyPic.visible = false;
         if(guiComponent.id == -13371){
 
             Game.world.battle.selectedMenu = 1;
@@ -107,7 +114,7 @@ public class GUIBattle extends GUI {
             hasSelectedAction = true;
         }
         if(hasSelectedAction){
-            getWindowById(-13370).getComponentById(-313370).visible = false;
+            ((GUIBattle)Game.gui).battleInteraction.battleInteractionText.visible = false;
         }
     }
 
@@ -116,8 +123,8 @@ public class GUIBattle extends GUI {
         super.onBackKey();
         if (hasSelectedAction) {
             if (!hasSelectedCHARActer && !hasSelectedSubAction) {
-                Game.gui.getComponentById(-13377).visible = true;
-                Game.gui.getWindowById(-13370).getComponentById(-313370).visible = true;
+                ((GUIBattle)Game.gui).enemyPic.visible = true;
+                ((GUIBattle)Game.gui).battleInteraction.battleInteractionText.visible = true;
                 hasSelectedAction = false;
                 Game.world.battle.selectedMenu = 0;
             }

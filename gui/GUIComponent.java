@@ -1,43 +1,41 @@
 package gui;
 
 import game.Game;
-import graphics.JGraphics2D;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 
 public class GUIComponent {
     public GUIComponent componentToAlign;
     public int id;
     public int x;
-    private double xPercentage;
+    public double xPercentage;
     public int y;
-    private double yPercentage;
+    public double yPercentage;
     public int actualX;
     public int actualY;
     public int width;
-    private double widthPercentage;
+    public double widthPercentage;
     public int height;
-    private double heightPercentage;
+    public double heightPercentage;
     public int actualWidth;
     public int actualHeight;
     public Rectangle bounds;
     public boolean visible = true;
     public boolean enabled = true;
     public gui.window.Window windowParent;
-    private Object alignLeft;
-    private Object alignRight;
-    private Object alignUp;
-    private Object alignDown;
-    private int leftMargin;
-    private int rightMargin;
-    private int upMargin;
-    private int downMargin;
-    private Rectangle marginBounds;
+    public Object alignLeft;
+    public Object alignRight;
+    public Object alignUp;
+    public Object alignDown;
+    public int leftMargin;
+    public int rightMargin;
+    public int upMargin;
+    public int downMargin;
+    public Rectangle marginBounds;
     public int contentHeight = 0;
-    int contentWidth = 0;
+    public int contentWidth = 0;
     public int scrollBarX = 0;
     public int scrollBarY = 0;
     public int scrollBarHeight = 0;
@@ -46,27 +44,27 @@ public class GUIComponent {
     public int contentOffsetY = 0;
     public int scrollableHeight;
     public Rectangle scrollBarBounds;
-    int dx;
+    public int dx;
     public int dy;
-    private boolean isInWindow;
-    int sideOffset = 0;
-    private int frameOffset = 0;
+    public boolean isInWindow;
+    public int sideOffset = 0;
+    public int frameOffset = 0;
 
-    GUIComponent(int id){
+    public GUIComponent(int id){
         this(id, Game.GAME_HEIGHT / 2 - (100 / 2), Game.GAME_WIDTH / 2 - (100 / 2), 100, 100);
     }
 
-    GUIComponent(int id, double x, double y, double width, double height){
+    public GUIComponent(int id, double x, double y, double width, double height){
         this(id, x, y, width, height, null, null, null, null);
     }
 
-    GUIComponent(int id, double x, double y, double width, double height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown){
+    public GUIComponent(int id, double  x, double  y, double  width, double  height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown){
         this(id, x, y, width, height, alignLeft, alignRight, alignUp, alignDown, 0, 0, 0, 0);
     }
 
 
 
-    GUIComponent(int id, double x, double y, double width, double height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown, int leftMargin, int rightMargin, int upMargin, int downMargin){
+    public GUIComponent(int id, double x, double y, double width, double height, Object alignLeft, Object alignRight, Object alignUp, Object alignDown, int leftMargin, int rightMargin, int upMargin, int downMargin){
         this.id = id;
         if(x < 1 && 0 < x || y < 1 && 0 < y || width < 1 && 0 < width || height < 1 && 0 < height){
             if(x < 1 && 0 < x){
@@ -229,7 +227,7 @@ public class GUIComponent {
 
 
 
-    void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
+    public void drawCenteredString(Graphics g, String text, Rectangle rect, Font font) {
 
         FontMetrics metrics = g.getFontMetrics(font);
 
@@ -242,7 +240,7 @@ public class GUIComponent {
         g.drawString(text, x, y);
     }
 
-    public void onClick(MouseEvent e) {
+    public void onClick() {
         if(windowParent != null && enabled){
             windowParent.actionPerformed(this);
             return;
@@ -250,13 +248,13 @@ public class GUIComponent {
         if(enabled) Game.gui.actionPerfomed(this);
     }
 
-    void onEnter(KeyEvent e) {
+    public void onEnter() {
 
         if(windowParent != null && enabled){
             windowParent.enterPerformed(this);
             return;
         }
-        if(enabled) Game.gui.enterPerfomed(this);
+        if(enabled) Game.gui.enterPerfomed();
     }
 
     public void onKey(KeyEvent e) {
@@ -265,7 +263,7 @@ public class GUIComponent {
             windowParent.keyPerformed(this, e);
             return;
         }
-        if(enabled) Game.gui.keyPerformed(this, e);
+        if(enabled) Game.gui.keyPerformed();
     }
 
     public void drawOver(Graphics2D g2d) {

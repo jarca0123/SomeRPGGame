@@ -8,8 +8,8 @@ import java.awt.image.BufferedImage;
 
 
 public class ImageNText extends GUIComponent {
-    private BufferedImage image;
-    private String text;
+    public BufferedImage image;
+    public String text;
     public ImageNText(int id, BufferedImage image, String text) {
         super(id);
         this.image = image;

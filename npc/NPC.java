@@ -6,20 +6,18 @@ package npc;
 import animation.Direction;
 import animation.NPCAnimationState;
 import game.Game;
-import graphics.JGraphics2D;
+import geometry.GameRect;
 import gui.GUIBattle;
 import gui.window.*;
 import gui.window.Window;
 import npc.bullet.Bullet;
 import npc.dialogue.BattleDialogue;
 import npc.dialogue.Dialogue;
-import sun.awt.image.ToolkitImage;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,30 +31,30 @@ public class NPC implements Cloneable{
     public int y;
 
 
-    protected int centerX;
-    protected int centerY;
-    protected int dx;
-    protected int dy;
+    public int centerX;
+    public int centerY;
+    public int dx;
+    public int dy;
     public BufferedImage image;
-    public Rectangle bounds;
+    public GameRect bounds;
     public boolean isColliding = false;
-    protected NPCAnimationState animationState;
-    private int subImageRows;
-    private int subImageCols;
-    private BufferedImage[][] subImages;
+    public NPCAnimationState animationState;
+    public int subImageRows;
+    public int subImageCols;
+    public BufferedImage[][] subImages;
     private long animationDelay;
-    protected Direction facing;
-    private boolean isMakingStep = false;
-    protected boolean up = false;
-    protected boolean down = false;
-    protected boolean left = false;
-    protected boolean right = false;
+    public Direction facing;
+    public boolean isMakingStep = false;
+    public boolean up = false;
+    public boolean down = false;
+    public boolean left = false;
+    public boolean right = false;
     public Dialogue npcDialogue;
-    private boolean isLeft = false;
+    public boolean isLeft = false;
     public BattleDialogue npcBattleDialogue;
 
-    protected int width;
-    protected int height;
+    public int width;
+    public int height;
     public boolean isFighting = false;
     public long timeBattleLevel = 0l;
     public int constantHP;
@@ -66,7 +64,7 @@ public class NPC implements Cloneable{
     public boolean canBeSpared = false;
     public int AT = 10;
 
-    protected NPC(int id, String name, String imageSrc, int x, int y, int tileSetWidth, int tileSetHeight, int width, int height, boolean useTileset){
+    public NPC(int id, String name, String imageSrc, int x, int y, int tileSetWidth, int tileSetHeight, int width, int height, boolean useTileset){
         this.name = name;
         this.id = id;
         try {
@@ -74,7 +72,7 @@ public class NPC implements Cloneable{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        this.bounds = new Rectangle(x, y, 40, 25);
+        this.bounds = new GameRect(x, y, 40, 25);
         this.x = x;
         this.y = y;
         this.width = width;
@@ -96,11 +94,11 @@ public class NPC implements Cloneable{
             image = subImages[1][0];
 
         }
-        this.npcDialogue = new Dialogue("example text\n;img1;next example text\n...\n\b");
+        this.npcDialogue = new Dialogue("Well. \n;img1;  This is my dialogue. \n Cool. \n\b");
         this.npcBattleDialogue = new BattleDialogue("You are fighting with something...");
     }
 
-    private void splitTileset(int tileSetWidth, int tileSetHeight) {
+    public void splitTileset(int tileSetWidth, int tileSetHeight) {
 
 
         subImageRows = image.getWidth() / tileSetWidth;
@@ -125,7 +123,7 @@ public class NPC implements Cloneable{
 
     }
 
-    protected NPC(int id, String name, String imageSrc, int x, int y){
+    public NPC(int id, String name, String imageSrc, int x, int y){
         this(id, name, imageSrc, x, y, 0, 0, 0, 0, false);
     }
 
@@ -145,7 +143,7 @@ public class NPC implements Cloneable{
 
 
 
-    private void updateAnimation(double delta){
+    public void updateAnimation(){
         long currentTimeMs = System.currentTimeMillis();
         if(animationState == NPCAnimationState.STANDING){
             animationDelay = 0;
@@ -221,7 +219,7 @@ public class NPC implements Cloneable{
                 battleLevelUpdate();
             }
         }
-        updateAnimation(delta);
+        updateAnimation();
         x = x + dx;
         y = y + dy;
         centerX += dx;

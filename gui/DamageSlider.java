@@ -8,8 +8,8 @@ import java.awt.*;
 public class DamageSlider extends GUIComponent {
     private int originalX;
     private int originalY;
-    private boolean fighting = false;
-    private boolean waitForEnemyAttack = false;
+    public boolean fighting = false;
+    public boolean waitForEnemyAttack = false;
     public DamageSlider(int id) {
         super(id);
     }

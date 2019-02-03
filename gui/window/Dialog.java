@@ -6,15 +6,12 @@ import gui.JustText;
 import gui.SimpleButton;
 import gui.TextBox;
 
-import java.awt.*;
-import java.util.Calendar;
-
 
 public class Dialog extends Window {
-    private String label;
-    private int stringWidth;
+    public String label;
+    public int stringWidth;
     private WindowCallback callback;
-    private String text;
+    public String text;
     public Dialog(int id, int x, int y, int width, int height, String label, boolean actionBarEnabled, Object callback) {
         super(id, x, y, width, height, actionBarEnabled);
         this.label = label;
@@ -31,7 +28,7 @@ public class Dialog extends Window {
         if(guiComponent.id == 2){
 
             text = ((TextBox)getComponentById(1)).text;
-            callback.onEvent(guiComponent, text);
+            callback.onEvent(text);
         }
     }
 }

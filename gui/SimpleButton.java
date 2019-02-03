@@ -6,8 +6,8 @@ import java.awt.*;
 
 
 public class SimpleButton extends GUIComponent {
-    private String text;
-    private boolean isSelected = false;
+    public String text;
+    public boolean isSelected = false;
     public SimpleButton(int id, String text) {
         super(id);
         this.text = text;

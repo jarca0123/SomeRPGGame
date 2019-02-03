@@ -2,33 +2,32 @@ package gui.window;
 
 import battle.Battle;
 import game.Game;
-import graphics.JGraphics2D;
 import gui.ImageComponent;
-import gui.JustText;
 import item.Item;
 import npc.NPC;
 import tiles.Tile;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class GameInteraction extends Window {
 
-    private Object target;
-    private Tile targetTile;
-    private ArrayList dialogueText;
-    private int number;
-    private int dialogueId = 0;
+    public Object target;
+    public Tile targetTile;
+    public ArrayList dialogueText;
+    public int number;
+    int dialogueId = 0;
     int charaDelay = 200;
     private String text = "";
     private String renderedText = "";
-    private long timeSinceLastCharacter;
+    public long timeSinceLastCharacter;
     private int dialogueImageId = 0;
-    private WindowCallback callback;
-    private ArrayList<String> textLines = new ArrayList<String>();
-    private ArrayList<String>  renderedTextLines = new ArrayList<String>();
-    private int alreadyRendered = 0;
+    public WindowCallback callback;
+    public ArrayList<String> textLines = new ArrayList<String>();
+    public ArrayList<String>  renderedTextLines = new ArrayList<String>();
+    public int alreadyRendered = 0;
 
     public GameInteraction(int id, boolean actionBarEnabled, Object target) {
         super(id, actionBarEnabled);
@@ -50,7 +49,7 @@ public class GameInteraction extends Window {
                     add(targetNPC);
                 }}));
                 renderedText = "";
-                Game.gui.windows.remove(this);
+                Game.gui.removeGUIWindow(this);
             }
             if (targetNPC.npcDialogue.dialogueText.get(dialogueId).contains(";img")) {
                 dialogueImageId = Integer.parseInt(targetNPC.npcDialogue.dialogueText.get(dialogueId).split(";")[1].replace(";img", "").replace(";", ""));
@@ -74,9 +73,9 @@ public class GameInteraction extends Window {
         textLines.add("");
         for(String s : text.split(" ")){
 
-            stringwidth += Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+            stringwidth += Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
             if (stringwidth > 300) {
-                stringwidth = Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+                stringwidth = Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
                 textLines.set(textline, textLines.get(textline).substring(0, textLines.get(textline).length() - 1));
                 textline++;
                 textLines.add("");
@@ -109,9 +108,9 @@ public class GameInteraction extends Window {
         textLines.add("");
         for(String s : text.split(" ")){
 
-            stringwidth += Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+            stringwidth += Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
             if (stringwidth > 600) {
-                stringwidth = Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+                stringwidth = Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
                 textLines.set(textline, textLines.get(textline).substring(0, textLines.get(textline).length() - 1));
                 textline++;
                 textLines.add("");
@@ -150,15 +149,17 @@ public class GameInteraction extends Window {
 
 
     public void nextDialogue(){
+        alreadyRendered =0;
         dialogueId++;
         renderedText = "";
         renderedTextLines = new ArrayList<>();
+        textLines = new ArrayList<String>();
         if(number == 0) {
             NPC targetNPC = (NPC) target;
             if (targetNPC.npcDialogue.dialogueText.size() < dialogueId + 1) {
                 Game.world.isInteracting = false;
 
-                Game.gui.windows.remove(this);
+                Game.gui.removeGUIWindow(this);
             } else {
                 text = targetNPC.npcDialogue.dialogueText.get(dialogueId);
 
@@ -168,7 +169,7 @@ public class GameInteraction extends Window {
                         add(targetNPC);
                     }}));
                     renderedText = "";
-                    Game.gui.windows.remove(this);
+                    Game.gui.removeGUIWindow(this);
                 }
                 if (targetNPC.npcDialogue.dialogueText.get(dialogueId).contains(";img")) {
                     dialogueImageId = Integer.parseInt(targetNPC.npcDialogue.dialogueText.get(dialogueId).split(";")[1].replace("img", "").replace(";", ""));
@@ -179,18 +180,22 @@ public class GameInteraction extends Window {
                 int stringwidth = 0;
                 int textline = 0;
                 textLines.add("");
-                for(String s : text.split(" ")){
+                ArrayList<String> hm = new ArrayList<String>(Arrays.asList(text.split(" ")));
+                while(hm.remove(""));
+                while(hm.remove(" "));
+                for(String s : hm){
 
-                    stringwidth += Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+                    stringwidth += Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
+
                     if (stringwidth > 600) {
-                        stringwidth = Game.gamePanel.getFontMetrics(new Font("Font Name", Font.BOLD, 25)).stringWidth(s);
+                        stringwidth = Game.gamePanel.getFontMetrics(new Font("Determination Mono", Font.BOLD, 25)).stringWidth(s);
                         textLines.set(textline, textLines.get(textline).substring(0, textLines.get(textline).length() - 1));
                         textline++;
                         textLines.add("");
-                        textLines.set(textline, s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
+                        textLines.set(textline, s + (s.equals(hm.get(hm.size() - 1)) ? "" : " "));
 
                     } else {
-                        textLines.set(textline, s + (s.equals(text.split(" ")[text.split(" ").length - 1]) ? "" : " "));
+                        textLines.set(textline, textLines.get(textline) + s + (s.equals(hm.get(hm.size() - 1))  ? "" : " "));
                     }
 
                 }
@@ -203,15 +208,16 @@ public class GameInteraction extends Window {
             if (target.npcDialogue.dialogueText.size() < dialogueId + 1) {
                 Game.world.isInteracting = false;
 
-                Game.gui.windows.remove(this);
-                callback.onEvent(null, "savePrompt");
+                Game.gui.removeGUIWindow(this);
+                callback.onEvent("savePrompt");
             } else {
                 text = target.npcDialogue.dialogueText.get(dialogueId);
             }
         } else if (number == 2 || number == 3){
 
             Game.world.isInteracting = false;
-            Game.gui.windows.remove(this);
+
+            Game.gui.removeGUIWindow(this);
         }
     }
 }
